@@ -7,144 +7,338 @@ namespace Project
 {
     class Program
     {
+        private struct SpelerInfo
+        {
+            public String SpelerNaam;
+            public char SpelerID;
+        };
+
+
         static void Main(string[] args)
         {
+
             bool applicatieActief = true;
-            while (applicatieActief)
+            do
             {
-
-
-                Console.WriteLine(" |  \\/  |                  ");
-                Console.WriteLine(" | \\  / | ___ _ __  _   _  ");
-                Console.WriteLine(" | |\\/| |/ _ \\ '_ \\| | | ");
-                Console.WriteLine(" | |  | |  __/ | | | |_| |  ");
-                Console.WriteLine(" |_|  |_|\\___|_| |_|\\__,_|");
-
-
-
-                Console.WriteLine();
-                Console.WriteLine("#####################################");
-                Console.WriteLine("# Kies uit 1 van de volgende spelen #");
-                Console.WriteLine("# Spel 1 = Vier op een rij          #");
-                Console.WriteLine("# Spel 2 =                          #");
-                Console.WriteLine("# Spel 3                            #");
-                Console.WriteLine("#####################################");
-                int keuze = 0;
-                string letterKeuze = Console.ReadKey().KeyChar.ToString();
+                //int keuze = 0;
+                //string letterKeuze = Console.ReadKey().KeyChar.ToString();
                 try
                 {
-                    keuze = Convert.ToInt32(letterKeuze);
-                    switch (keuze)
+
+                    Program.Menu();
+
+                    //keuze = Convert.ToInt32(letterKeuze);
+                    ConsoleKey ck = Console.ReadKey().Key;
+                    switch (ck)
                     {
-                        case 1:
+                        case ConsoleKey.NumPad1:
                             Console.WriteLine("\bKeuze 1: geselecteerd");
                             Spel1();
                             break;
-                        case 2:
+                        case ConsoleKey.NumPad2:
                             Console.WriteLine("\bKezue 2: geselecteerd");
+                            Spel2();
 
                             break;
-                        case 3:
+                        case ConsoleKey.NumPad3:
 
                             break;
-                        case 0:
+                        case ConsoleKey.D0:
+                            Console.WriteLine("\b ");
                             applicatieActief = false;
                             break;
+
+                        case ConsoleKey.Escape:
+
+
+                            break;
+
                     }
                 }
                 catch (Exception ex)
                 {
+                    Console.Clear();
                     Console.WriteLine(ex.Message);
+
                 }
-                Thread.Sleep(3000);
-            }
+                Thread.Sleep(500);
+
+
+            } while (applicatieActief);
+        }
+
+        private static void Menu()
+        {
+            Console.Clear();
+            Console.WriteLine(" |  \\/  |                  ");
+            Console.WriteLine(" | \\  / | ___ _ __  _   _  ");
+            Console.WriteLine(" | |\\/| |/ _ \\ '_ \\| | | ");
+            Console.WriteLine(" | |  | |  __/ | | | |_| |  ");
+            Console.WriteLine(" |_|  |_|\\___|_| |_|\\__,_|");
+
+
+
+            Console.WriteLine();
+            Console.WriteLine("#####################################");
+            Console.WriteLine("# Kies uit 1 van de volgende spelen #");
+            Console.WriteLine("# Spel 1 = Vier op een rij          #");
+            Console.WriteLine("# Spel 2 =                          #");
+            Console.WriteLine("# Spel 3                            #");
+            Console.WriteLine("#####################################");
         }
 
         private static void Spel1()
         {
 
             Console.Clear();
-            int[,] SpeelBord = new int[7, 7];
-            Console.SetCursorPosition(0, 0);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\n\n\t\t\t\t 1 2 3 4 5 6 7\n");
-            Console.ForegroundColor = ConsoleColor.White;
-            string tabbing = "\t\t\t\t ";
-            for (int r = 0; r < 7; r++)
-            {
-                System.Threading.Thread.Sleep(100);
-                Console.Write(tabbing);
-                for (int c = 0; c < 7; c++)
-                {
-                    Console.Write(0);
-                    Console.Write(" ");
-                }
-                Console.WriteLine();
-            }
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("\n\n\t\t   Kies de rij waar je je disc wilt hebben : ");
+            SpelerInfo SpelerEen = new SpelerInfo();
+            SpelerInfo SpelerTwee = new SpelerInfo();
+            char[,] SpelBord = new char[9, 10];
+            int DropKeuze, win, vol, opnieuw;
+
+            Console.WriteLine("###########################");
+            Console.WriteLine("# Vier op een rij Spelen! #");
+            Console.WriteLine("###########################");
             Console.WriteLine();
-            Console.WriteLine("\n\n\t\t     Druk op Esc om terug te gaan naar de Menu :) ");
-            Console.ForegroundColor = ConsoleColor.White;
-        again:
-            switch (Console.ReadKey(true).KeyChar.ToString())
+            Console.WriteLine("# Speler een geef je naam: #");
+            SpelerEen.SpelerNaam = Console.ReadLine();
+            SpelerEen.SpelerID = 'X';
+            Console.Clear();
+            Console.WriteLine("###########################");
+            Console.WriteLine("# Vier op een rij Spelen! #");
+            Console.WriteLine("###########################");
+            Console.WriteLine();
+            Console.WriteLine("# Speler twee geef je naam: #");
+            SpelerTwee.SpelerNaam = Console.ReadLine();
+            SpelerTwee.SpelerID = 'O';
+            Console.Clear();
+
+            vol = 0;
+            win = 0;
+            opnieuw = 0;
+            GeefSpeelbordAan(SpelBord);
+            do
             {
-                case "1":
-                    Console.Write("1");
-                    if (SpeelBord[0, 0] < 7) SpeelBord[0, 0]++;
-                    Console.SetCursorPosition(33, 11 - SpeelBord[0, 0]);
-                    Console.Write("1");
-                    Console.SetCursorPosition(60, 13);
-                    goto again;
-                case "2":
-                    Console.Write("2");
-                    if (SpeelBord[1, 0] < 7) SpeelBord[1, 0]++;
-                    Console.SetCursorPosition(35, 11 - SpeelBord[1, 0]);
-                    Console.Write("1");
-                    Console.SetCursorPosition(60, 13);
-                    goto again;
-                case "3":
-                    Console.Write("3");
-                    if (SpeelBord[2, 0] < 7) SpeelBord[2, 0]++;
-                    Console.SetCursorPosition(37, 11 - SpeelBord[2, 0]);
-                    Console.Write("1");
-                    Console.SetCursorPosition(60, 13);
-                    goto again;
-                case "4":
-                    Console.Write("4");
-                    if (SpeelBord[3, 0] < 7) SpeelBord[3, 0]++;
-                    Console.SetCursorPosition(39, 11 - SpeelBord[3, 0]);
-                    Console.Write("1");
-                    Console.SetCursorPosition(60, 13);
-                    goto again;
-                case "5":
-                    Console.Write("5");
-                    if (SpeelBord[4, 0] < 7) SpeelBord[4, 0]++;
-                    Console.SetCursorPosition(41, 11 - SpeelBord[4, 0]);
-                    Console.Write("1");
-                    Console.SetCursorPosition(60, 13);
-                    goto again;
-                case "6":
-                    Console.Write("6");
-                    if (SpeelBord[5, 0] < 7) SpeelBord[5, 0]++;
-                    Console.SetCursorPosition(43, 11 - SpeelBord[5, 0]);
-                    Console.Write("1");
-                    Console.SetCursorPosition(60, 13);
-                    goto again;
-                case "7":
-                    Console.Write("7");
-                    if (SpeelBord[6, 0] < 7) SpeelBord[6, 0]++;
-                    Console.SetCursorPosition(45, 11 - SpeelBord[6, 0]);
-                    Console.Write("1");
-                    Console.SetCursorPosition(60, 13);
-                    goto again;
-                default:
-                    goto again;
+                DropKeuze = PlayerDrop(SpelBord, SpelerEen);
+                CheckOnder(SpelBord, SpelerEen, DropKeuze);
+                GeefSpeelbordAan(SpelBord);
+                win = CheckFour(SpelBord, SpelerEen);
+                if (win == 1)
+                {
+                    SpelerWint(SpelerEen);
+                    opnieuw = restart(SpelBord);
+                    if (opnieuw == 2)
+                    {
+                        break;
+                    }
+                }
+
+                DropKeuze = PlayerDrop(SpelBord, SpelerTwee);
+                CheckOnder(SpelBord, SpelerTwee, DropKeuze);
+                GeefSpeelbordAan(SpelBord);
+                win = CheckFour(SpelBord, SpelerTwee);
+                if (win == 1)
+                {
+                    SpelerWint(SpelerTwee);
+                    opnieuw = restart(SpelBord);
+                    if (opnieuw == 2)
+                    {
+                        break;
+                    }
+                }
+                vol = VolSpeelbord(SpelBord);
+                if (vol == 7)
+                {
+                    Console.WriteLine("Het bord is vol, Het is een gelijkspel!");
+                    opnieuw = restart(SpelBord);
+                }
+
+            } while (opnieuw != 2);
+        }
+        static int PlayerDrop(char[,] board, SpelerInfo HudigeSpeler)
+        {
+            int DropKeuze;
+
+            Console.WriteLine(HudigeSpeler.SpelerNaam + "'s Beurt ");
+            do
+            {
+                Console.WriteLine("Selecteer een nummer tussen 1 en 7: ");
+                DropKeuze = Convert.ToInt32(Console.ReadLine());
+            } while (DropKeuze < 1 || DropKeuze > 7);
+
+            while (board[1, DropKeuze] == 'X' || board[1, DropKeuze] == 'O')
+            {
+                Console.WriteLine("Dat rij is vol, Voeg AUB een nieuwe rij in: ");
+                DropKeuze = Convert.ToInt32(Console.ReadLine());
             }
+
+            return DropKeuze;
+        }
+
+        static void CheckOnder(char[,] board, SpelerInfo activePlayer, int dropChoice)
+        {
+            int length, turn;
+            length = 6;
+            turn = 0;
+
+            do
+            {
+                if (board[length, dropChoice] != 'X' && board[length, dropChoice] != 'O')
+                {
+                    board[length, dropChoice] = activePlayer.SpelerID;
+                    turn = 1;
+                }
+                else
+                    --length;
+            } while (turn != 1);
+
+
+        }
+
+        static void GeefSpeelbordAan(char[,] board)
+        {
+            int rows = 6, columns = 7, i, ix;
+
+            for (i = 1; i <= rows; i++)
+            {
+                Console.Write("|");
+                for (ix = 1; ix <= columns; ix++)
+                {
+                    if (board[i, ix] != 'X' && board[i, ix] != 'O')
+                        board[i, ix] = '*';
+
+                    Console.Write(board[i, ix]);
+
+                }
+
+                Console.Write("| \n");
+            }
+
+        }
+
+        static int CheckFour(char[,] SpeelBord, SpelerInfo activePlayer)
+        {
+            char XO;
+            int win;
+
+            XO = activePlayer.SpelerID;
+            win = 0;
+
+            for (int i = 8; i >= 1; --i)
+            {
+
+                for (int ix = 9; ix >= 1; --ix)
+                {
+
+                    if (SpeelBord[i, ix] == XO &&
+                        SpeelBord[i - 1, ix - 1] == XO &&
+                        SpeelBord[i - 2, ix - 2] == XO &&
+                        SpeelBord[i - 3, ix - 3] == XO)
+                    {
+                        win = 1;
+                    }
+
+
+                    if (SpeelBord[i, ix] == XO &&
+                        SpeelBord[i, ix - 1] == XO &&
+                        SpeelBord[i, ix - 2] == XO &&
+                        SpeelBord[i, ix - 3] == XO)
+                    {
+                        win = 1;
+                    }
+
+                    if (SpeelBord[i, ix] == XO &&
+                        SpeelBord[i - 1, ix] == XO &&
+                        SpeelBord[i - 2, ix] == XO &&
+                        SpeelBord[i - 3, ix] == XO)
+                    {
+                        win = 1;
+                    }
+
+                    if (SpeelBord[i, ix] == XO &&
+                        SpeelBord[i - 1, ix + 1] == XO &&
+                        SpeelBord[i - 2, ix + 2] == XO &&
+                        SpeelBord[i - 3, ix + 3] == XO)
+                    {
+                        win = 1;
+                    }
+
+                    if (SpeelBord[i, ix] == XO &&
+                         SpeelBord[i, ix + 1] == XO &&
+                         SpeelBord[i, ix + 2] == XO &&
+                         SpeelBord[i, ix + 3] == XO)
+                    {
+                        win = 1;
+                    }
+                }
+
+            }
+
+            return win;
+        }
+
+        static int VolSpeelbord(char[,] SpeelBord)
+        {
+            int full;
+            full = 0;
+            for (int i = 1; i <= 7; ++i)
+            {
+                if (SpeelBord[1, i] != '*')
+                    ++full;
+            }
+
+            return full;
+        }
+
+        static void SpelerWint(SpelerInfo activePlayer)
+        {
+            Console.WriteLine(activePlayer.SpelerNaam + " Connected Four, You Win!");
+        }
+
+        static int restart(char[,] Speelbord)
+        {
+            int restart;
+
+            Console.WriteLine("Wil je opnieuw spelen? Ja(1) Nee(2): ");
+            restart = Convert.ToInt32(Console.ReadLine());
+            if (restart == 1)
+            {
+                for (int i = 1; i <= 6; i++)
+                {
+                    for (int ix = 1; ix <= 7; ix++)
+                    {
+                        Speelbord[i, ix] = '*';
+                    }
+                }
+            }
+            else
+                Console.WriteLine("Tot Ziens!");
+            return restart;
+        }
+
+
+
+
+
+
+
+
+
+        private static void Spel2()
+        {
+            Console.Clear();
+            Console.WriteLine("Spel 2 coming soon");
+
+
+
+
 
         }
     }
 }
+
+
+
 
 
     
