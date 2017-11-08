@@ -85,6 +85,7 @@ namespace Project
             Console.WriteLine("# Spel 2 =                          #");
             Console.WriteLine("# Spel 3                            #");
             Console.WriteLine("#####################################");
+            
         }
 
         private static void Spel1()
@@ -93,7 +94,7 @@ namespace Project
             Console.Clear();
             SpelerInfo SpelerEen = new SpelerInfo();
             SpelerInfo SpelerTwee = new SpelerInfo();
-            char[,] SpelBord = new char[9, 10];
+            char[,] Bord = new char[9, 10];
             int DropKeuze, win, vol, opnieuw;
 
             Console.WriteLine("###########################");
@@ -116,46 +117,46 @@ namespace Project
             vol = 0;
             win = 0;
             opnieuw = 0;
-            GeefSpeelbordAan(SpelBord);
+            GeefSpeelbordAan(Bord);
             do
             {
-                DropKeuze = PlayerDrop(SpelBord, SpelerEen);
-                CheckOnder(SpelBord, SpelerEen, DropKeuze);
-                GeefSpeelbordAan(SpelBord);
-                win = CheckFour(SpelBord, SpelerEen);
+                DropKeuze = SpelerDrop(Bord, SpelerEen);
+                CheckOnder(Bord, SpelerEen, DropKeuze);
+                GeefSpeelbordAan(Bord);
+                win = CheckVoorVierOpeenRij(Bord, SpelerEen);
                 if (win == 1)
                 {
                     SpelerWint(SpelerEen);
-                    opnieuw = restart(SpelBord);
+                    opnieuw = restart(Bord);
                     if (opnieuw == 2)
                     {
                         break;
                     }
                 }
 
-                DropKeuze = PlayerDrop(SpelBord, SpelerTwee);
-                CheckOnder(SpelBord, SpelerTwee, DropKeuze);
-                GeefSpeelbordAan(SpelBord);
-                win = CheckFour(SpelBord, SpelerTwee);
+                DropKeuze = SpelerDrop(Bord, SpelerTwee);
+                CheckOnder(Bord, SpelerTwee, DropKeuze);
+                GeefSpeelbordAan(Bord);
+                win = CheckVoorVierOpeenRij(Bord, SpelerTwee);
                 if (win == 1)
                 {
                     SpelerWint(SpelerTwee);
-                    opnieuw = restart(SpelBord);
+                    opnieuw = restart(Bord);
                     if (opnieuw == 2)
                     {
                         break;
                     }
                 }
-                vol = VolSpeelbord(SpelBord);
+                vol = VolSpeelbord(Bord);
                 if (vol == 7)
                 {
                     Console.WriteLine("Het bord is vol, Het is een gelijkspel!");
-                    opnieuw = restart(SpelBord);
+                    opnieuw = restart(Bord);
                 }
 
             } while (opnieuw != 2);
         }
-        static int PlayerDrop(char[,] board, SpelerInfo HudigeSpeler)
+        static int SpelerDrop(char[,] SpeelBord, SpelerInfo HudigeSpeler)
         {
             int DropKeuze;
 
@@ -166,7 +167,7 @@ namespace Project
                 DropKeuze = Convert.ToInt32(Console.ReadLine());
             } while (DropKeuze < 1 || DropKeuze > 7);
 
-            while (board[1, DropKeuze] == 'X' || board[1, DropKeuze] == 'O')
+            while (SpeelBord[1, DropKeuze] == 'X' || SpeelBord[1, DropKeuze] == 'O')
             {
                 Console.WriteLine("Dat rij is vol, Voeg AUB een nieuwe rij in: ");
                 DropKeuze = Convert.ToInt32(Console.ReadLine());
@@ -175,7 +176,7 @@ namespace Project
             return DropKeuze;
         }
 
-        static void CheckOnder(char[,] board, SpelerInfo activePlayer, int dropChoice)
+        static void CheckOnder(char[,] SpeelBord, SpelerInfo HudigeSpeler, int dropKeuze)
         {
             int length, turn;
             length = 6;
@@ -183,9 +184,9 @@ namespace Project
 
             do
             {
-                if (board[length, dropChoice] != 'X' && board[length, dropChoice] != 'O')
+                if (SpeelBord[length, dropKeuze] != 'X' && SpeelBord[length, dropKeuze] != 'O')
                 {
-                    board[length, dropChoice] = activePlayer.SpelerID;
+                    SpeelBord[length, dropKeuze] = HudigeSpeler.SpelerID;
                     turn = 1;
                 }
                 else
@@ -195,7 +196,7 @@ namespace Project
 
         }
 
-        static void GeefSpeelbordAan(char[,] board)
+        static void GeefSpeelbordAan(char[,] SpeelBord)
         {
             int rows = 6, columns = 7, i, ix;
 
@@ -204,10 +205,10 @@ namespace Project
                 Console.Write("|");
                 for (ix = 1; ix <= columns; ix++)
                 {
-                    if (board[i, ix] != 'X' && board[i, ix] != 'O')
-                        board[i, ix] = '*';
+                    if (SpeelBord[i, ix] != 'X' && SpeelBord[i, ix] != 'O')
+                        SpeelBord[i, ix] = '*';
 
-                    Console.Write(board[i, ix]);
+                    Console.Write(SpeelBord[i, ix]);
 
                 }
 
@@ -216,12 +217,12 @@ namespace Project
 
         }
 
-        static int CheckFour(char[,] SpeelBord, SpelerInfo activePlayer)
+        static int CheckVoorVierOpeenRij(char[,] SpeelBord, SpelerInfo HudigeSpeler)
         {
             char XO;
             int win;
 
-            XO = activePlayer.SpelerID;
+            XO = HudigeSpeler.SpelerID;
             win = 0;
 
             for (int i = 8; i >= 1; --i)
@@ -327,7 +328,16 @@ namespace Project
         private static void Spel2()
         {
             Console.Clear();
-            Console.WriteLine("Spel 2 coming soon");
+            Console.WriteLine("################");
+            Console.WriteLine("# Snake Game ! # ");
+            Console.WriteLine("################");
+
+
+
+
+
+            
+                    
 
 
 
