@@ -82,13 +82,13 @@ namespace Project
             Console.WriteLine("#####################################");
             Console.WriteLine("# Kies uit 1 van de volgende spelen #");
             Console.WriteLine("# Spel 1 = Vier op een rij          #");
-            Console.WriteLine("# Spel 2 =                          #");
-            Console.WriteLine("# Spel 3                            #");
+            Console.WriteLine("# Spel 2 = Boter kaas en eieren     #");
+            Console.WriteLine("# Spel 3 = Snake                    #");
             Console.WriteLine("#####################################");
-            
+
         }
 
-        private static void Spel1()
+        public static void Spel1()
         {
 
             Console.Clear();
@@ -323,29 +323,350 @@ namespace Project
 
 
 
+        
 
-
-        private static void Spel2()
+        public static void Spel2()
         {
             Console.Clear();
-            Console.WriteLine("################");
-            Console.WriteLine("# Snake Game ! # ");
-            Console.WriteLine("################");
+            
+              string[] positie = new string[10] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }; // Array 
+
+             void DrawBoard() // Speel board 
+            {
 
 
+                Console.WriteLine("   {0}  $  {1}  $  {2}   ", positie[1], positie[2], positie[3]);
+                Console.WriteLine("$$$$$$$$$$$$$$$$$$$");
+                Console.WriteLine("   {0}  $  {1}  $  {2}   ", positie[4], positie[5], positie[6]);
+                Console.WriteLine("$$$$$$$$$$$$$$$$$$$");
+                Console.WriteLine("   {0}  $  {1}  $  {2}   ", positie[7], positie[8], positie[9]);
 
+
+            }
+
+             
+            {
+                string speler1 = "", speler2 = "";
+                int keuzen = 0, turn = 1, score1 = 0, score2 = 0;
+                bool winFlag = false, spelen = true, juistenInput = false;
+
+                Console.WriteLine("Welkom dit is Boter Kaas En Eieren");
+                Console.WriteLine("Naam van speler 1?");
+                speler1 = Console.ReadLine();
+                Console.WriteLine("Naam van speler 2?");
+                speler2 = Console.ReadLine();
+                Console.WriteLine("Okay goed. {0} is O en {1} is X.", speler1, speler2);
+                Console.WriteLine("{0} gaat eerst.", speler1);
+                Console.ReadLine();
+                Console.Clear();
+
+                while (spelen == true)
+                {
+                    while (winFlag == false) // Game loop 
+                    {
+                        DrawBoard();
+                        Console.WriteLine("");
+
+                        Console.WriteLine("Score: {0} - {1}     {2} - {3}", speler1, score1, speler2, score2);
+                        if (turn == 1)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("{0}'s (O) beurt", speler1);
+                        }
+                        if (turn == 2)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                            Console.WriteLine("{0}'s (X) beurt", speler2);
+                        }
+
+                        while (juistenInput == false)
+                        {
+                            Console.WriteLine("Welke positie zou je graag willen?");
+                            keuzen = int.Parse(Console.ReadLine());
+                            if (keuzen > 0 && keuzen < 10)
+                            {
+                                juistenInput = true;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+
+                        juistenInput = false; // Reset
+
+                        if (turn == 1)
+                        {
+                            if (positie[keuzen] == "X") // kijken of de plek bezet is
+                            {
+                                Console.WriteLine("Helaas deze positie is al bezet! ");
+                                Console.Write("Probeer het overnieuw.");
+                                Console.ReadLine();
+                                Console.Clear();
+                                continue;
+                            }
+                            else
+                            {
+                                positie[keuzen] = "O";
+                            }
+                        }
+                        if (turn == 2)
+                        {
+                            if (positie[keuzen] == "O") // kijken of de plek bezet is
+                            {
+                                Console.WriteLine("Helaas deze plaats is al bezet! ");
+                                Console.Write("Probeer het overnieuw.");
+                                Console.ReadLine();
+                                Console.Clear();
+                                continue;
+                            }
+                            else
+                            {
+                                positie[keuzen] = "X";
+                            }
+                        }
+
+                        winFlag = CheckWin();
+
+                        if (winFlag == false)
+                        {
+                            if (turn == 1)
+                            {
+                                turn = 2;
+                            }
+                            else if (turn == 2)
+                            {
+                                turn = 1;
+                            }
+                            Console.Clear();
+                        }
+                    }
+
+                    Console.Clear();
+
+                    DrawBoard();
+
+                    for (int i = 1; i < 10; i++) // Resets het spel
+                    {
+                        positie[i] = i.ToString();
+                    }
+
+                    if (winFlag == false) // als niemand wint
+                    {
+                        Console.WriteLine("It's a draw!");
+                        Console.WriteLine("Score: {0} - {1}     {2} - {3}", speler1, score1, speler2, score2);
+                        Console.WriteLine("");
+                        Console.WriteLine("Wat zou je nu graag willen doen?");
+                        Console.WriteLine("1. opnieuw spelen");
+                        Console.WriteLine("2. spel sluiten");
+                        Console.WriteLine("");
+
+                        while (juistenInput == false)
+                        {
+                            Console.WriteLine("Geef je positie: ");
+                            keuzen = int.Parse(Console.ReadLine());
+
+                            if (keuzen > 0 && keuzen < 3)
+                            {
+                                juistenInput = true;
+                            }
+                        }
+
+                        juistenInput = false; // Reset 
+
+                        switch (keuzen)
+                        {
+                            case 1:
+                                break;
+                            case 2:
+                                Console.Clear();
+                                Console.WriteLine("Bedankt voor spelen!");
+                                Console.ReadLine();
+                                spelen = false;
+                                break;
+                        }
+                    }
+
+                    if (winFlag == true) // als iemand wint
+                    {
+                        if (turn == 1)
+                        {
+                            score1++;
+                            Console.WriteLine("{0} wint!", speler1);
+                            Console.WriteLine("Wat zou je nu graag willen doen?");
+                            Console.WriteLine("1. Opnieuw spelen");
+                            Console.WriteLine("2. Spel verlaten");
+
+                            while (juistenInput == false)
+                            {
+                                Console.WriteLine("Geef je positie: ");
+                                keuzen = int.Parse(Console.ReadLine());
+
+                                if (keuzen > 0 && keuzen < 3)
+                                {
+                                    juistenInput = true;
+                                }
+                            }
+
+                            juistenInput = false; // Reset 
+
+                            switch (keuzen)
+                            {
+                                case 1:
+                                    Console.Clear();
+                                    winFlag = false;
+                                    break;
+                                case 2:
+                                    Console.Clear();
+                                    Console.WriteLine("Bedankt voor spelen!");
+                                    Console.ReadLine();
+                                    spelen = false;
+                                    break;
+                            }
+                        }
+
+                        if (turn == 2)
+                        {
+                            score2++;
+                            Console.WriteLine("{0} wint!", speler2);
+                            Console.WriteLine("Wat zou je nu graag willen doen?");
+                            Console.WriteLine("1. Opnieuw spelen");
+                            Console.WriteLine("2. Spel verlaten");
+
+                            while (juistenInput == false)
+                            {
+                                Console.WriteLine("Geef je positie: ");
+                                keuzen = int.Parse(Console.ReadLine());
+
+                                if (keuzen > 0 && keuzen < 3)
+                                {
+                                    juistenInput = true;
+                                }
+                            }
+
+                            juistenInput = false; // Reset 
+
+                            switch (keuzen)
+                            {
+                                case 1:
+                                    Console.Clear();
+                                    winFlag = false;
+                                    break;
+                                case 2:
+                                    Console.Clear();
+                                    Console.WriteLine("Bedankt voor spelen!");
+                                    Console.ReadLine();
+                                    spelen = false;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
 
 
             
-                    
+
+              bool CheckWin() // Win controlen
+            {
+                if (positie[1] == "O" && positie[2] == "O" && positie[3] == "O") // Horizontaal
+                {
+                    return true;
+                }
+                else if (positie[4] == "O" && positie[5] == "O" && positie[6] == "O")
+                {
+                    return true;
+                }
+                else if (positie[7] == "O" && positie[8] == "O" && positie[9] == "O")
+                {
+                    return true;
+                }
+
+                else if (positie[1] == "O" && positie[5] == "O" && positie[9] == "O") // Diagonaal 
+                {
+                    return true;
+                }
+                else if (positie[7] == "O" && positie[5] == "O" && positie[3] == "O")
+                {
+                    return true;
+                }
+
+                else if (positie[1] == "O" && positie[4] == "O" && positie[7] == "O")// Coloumns 
+                {
+                    return true;
+                }
+                else if (positie[2] == "O" && positie[5] == "O" && positie[8] == "O")
+                {
+                    return true;
+                }
+                else if (positie[3] == "O" && positie[6] == "O" && positie[9] == "O")
+                {
+                    return true;
+                }
+
+                if (positie[1] == "X" && positie[2] == "X" && positie[3] == "X") // Horizontaal 
+                {
+                    return true;
+                }
+                else if (positie[4] == "X" && positie[5] == "X" && positie[6] == "X")
+                {
+                    return true;
+                }
+                else if (positie[7] == "X" && positie[8] == "X" && positie[9] == "X")
+                {
+                    return true;
+                }
+
+                else if (positie[1] == "X" && positie[5] == "X" && positie[9] == "X") // Diagonaal 
+                {
+                    return true;
+                }
+                else if (positie[7] == "X" && positie[5] == "X" && positie[3] == "X")
+                {
+                    return true;
+                }
+
+                else if (positie[1] == "X" && positie[4] == "X" && positie[7] == "X") // Coloumns 
+                {
+                    return true;
+                }
+                else if (positie[2] == "X" && positie[5] == "X" && positie[8] == "X")
+                {
+                    return true;
+                }
+                else if (positie[3] == "X" && positie[6] == "X" && positie[9] == "X")
+                {
+                    return true;
+                }
+                else //geen winnaar
+                {
+                    return false;
+                }
 
 
-
-
-
+                public static void spel3()
+                {
+                    Console.Clear();
+                }
+            }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
 
 
 
